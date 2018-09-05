@@ -16,23 +16,32 @@ context.lineJoin = "round";
 context.lineCap = "round";
 
 canvas.addEventListener( 'mousedown', draw );
+canvas.addEventListener( 'touchstart', draw );
 window.addEventListener( 'mouseup', stop );
+window.addEventListener( 'touchend', stop );
 
 function draw( e ) {
-  if ( e.which === 1 ) {
+  if ( e.which === 1 || e.type === 'touchstart' || e.type === 'touchmove') {
     window.addEventListener( 'mousemove', draw );
+    window.addEventListener('touchmove', draw);
     var mouseX = e.pageX - canvas.offsetLeft;
     var mouseY = e.pageY - canvas.offsetTop;
     var mouseDrag = e.type === 'mousemove';
-    if ( e.type === 'mousedown' ) saveState();
+    if(e.type === 'touchstart' || e.type === 'touchmove'){
+        mouseX = e.touches[0].pageX - canvas.offsetLeft;
+        mouseY = e.touches[0].pageY - canvas.offsetTop;
+        mouseDrag = e.type === 'touchmove';
+    }
+    if ( e.type === 'mousedown' || e.type === 'touchstart' ) saveState();
     linePoints.push( { x: mouseX, y: mouseY, drag: mouseDrag, width: toolSize, color: strokeStyle } );
     updateCanvas();
   }
 }
 
 function stop( e ) {
-  if ( e.which === 1 ) {
-    window.removeEventListener( 'mousemove', draw );
+  if ( e.which === 1 || e.type === 'touchend') {
+    window.removeEventListener('mousemove', draw);
+    window.removeEventListener('touchmove', draw);
   }
 }
 
