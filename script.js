@@ -12,13 +12,22 @@ var canvasState = [];
 
 context.strokeStyle = "#000000";
 context.lineWidth = 5;
-context.lineJoin = "round";
-context.lineCap = "round";
 
 canvas.addEventListener( 'mousedown', draw );
 canvas.addEventListener( 'touchstart', draw );
 window.addEventListener( 'mouseup', stop );
 window.addEventListener( 'touchend', stop );
+
+window.addEventListener( 'resize', resizeCanvas );
+
+function resizeCanvas(){
+    canvas.width = canvas.clientWidth;
+    canvas.height = canvas.clientHeight;
+    if(canvas.length) updateCanvas();
+}
+
+//resize canvas on load
+resizeCanvas();
 
 function draw( e ) {
   if ( e.which === 1 || e.type === 'touchstart' || e.type === 'touchmove') {
@@ -52,6 +61,8 @@ function updateCanvas() {
 }
 
 function renderLine() {
+  context.lineJoin = "round";
+  context.lineCap = "round";
   for ( var i = 0, length = linePoints.length; i < length; i++ ) {
     if ( !linePoints[i].drag ) {
         //context.stroke();
