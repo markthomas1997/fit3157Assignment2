@@ -6,6 +6,11 @@ var toolMode = 'draw'
 var toolSize = 5;
 var strokeStyle = "#000000";
 
+var initMouseX = 0;
+var initMouseY = 0;
+var newMouseX = 0;
+var newMouseY = 0;
+
 var undoButton = document.querySelector( '[data-action=undo]' );
 
 var canvasState = [];
@@ -30,21 +35,49 @@ function resizeCanvas(){
 resizeCanvas();
 
 function draw( e ) {
+    var mouseX = e.pageX - canvas.offsetLeft;
+    var mouseY = e.pageY - canvas.offsetTop;
   if ( e.which === 1 || e.type === 'touchstart' || e.type === 'touchmove') {
     window.addEventListener( 'mousemove', draw );
     window.addEventListener('touchmove', draw);
-    var mouseX = e.pageX - canvas.offsetLeft;
-    var mouseY = e.pageY - canvas.offsetTop;
+    mouseX = e.pageX - canvas.offsetLeft;
+    mouseY = e.pageY - canvas.offsetTop;
     var mouseDrag = e.type === 'mousemove';
-    if(e.type === 'touchstart' || e.type === 'touchmove'){
+    if(toolMode != 'drawRect'){
+        if(e.type === 'touchstart' || e.type === 'touchmove'){
         mouseX = e.touches[0].pageX - canvas.offsetLeft;
         mouseY = e.touches[0].pageY - canvas.offsetTop;
         mouseDrag = e.type === 'touchmove';
+        }
+        if ( e.type === 'mousedown' || e.type === 'touchstart' ) saveState();
+        linePoints.push( { x: mouseX, y: mouseY, drag: mouseDrag, width: toolSize, color: strokeStyle } );
+        updateCanvas();
     }
-    if ( e.type === 'mousedown' || e.type === 'touchstart' ) saveState();
-    linePoints.push( { x: mouseX, y: mouseY, drag: mouseDrag, width: toolSize, color: strokeStyle } );
-    updateCanvas();
+    else{
+        if(e.type === 'touchstart'){
+            saveState();
+            initMouseX = e.touches[0].pageX - canvas.offsetLeft;
+            initMouseY = e.touches[0].pageY - canvas.offsetTop;
+            
+        }
+        if(e.type === 'touchmove'){
+            //draw rectangle 
+            context.clearRect( 0, 0, canvas.width, canvas.height );
+            context.putImageData( canvasState[0], 0, 0 );
+            //renderLine();
+            
+            newMouseX = e.touches[0].pageX - canvas.offsetLeft;
+            newMouseY = e.touches[0].pageY - canvas.offsetTop;
+            
+            context.fillStyle = strokeStyle;
+            context.fillRect(initMouseX,initMouseY,newMouseX-initMouseX,newMouseY-initMouseY);
+        }
+    }
   }
+}
+
+function drawSquare(initX, initY){
+    canvas.addEventListener('touchmove')
 }
 
 function stop( e ) {
@@ -116,7 +149,7 @@ function saveState() {
     undoButton.classList.remove( 'disabled' );
     canvasState.unshift( context.getImageData( 0, 0, canvas.width, canvas.height ) );
     if ( canvasState.length > 25 ) canvasState.length = 25;
-
+    
     linePoints = [];
 }
 
