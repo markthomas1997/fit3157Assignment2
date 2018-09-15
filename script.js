@@ -43,15 +43,20 @@ function draw( e ) {
     mouseX = e.pageX - canvas.offsetLeft;
     mouseY = e.pageY - canvas.offsetTop;
     var mouseDrag = e.type === 'mousemove';
-    if(toolMode != 'drawRect'){
+    if(toolMode != 'drawRect'){     // When not drawing Shapes
         if(e.type === 'touchstart' || e.type === 'touchmove'){
         mouseX = e.touches[0].pageX - canvas.offsetLeft;
         mouseY = e.touches[0].pageY - canvas.offsetTop;
         mouseDrag = e.type === 'touchmove';
         }
+        
         if ( e.type === 'mousedown' || e.type === 'touchstart' ) saveState();
-        linePoints.push( { x: mouseX, y: mouseY, drag: mouseDrag, width: toolSize, color: strokeStyle } );
-        updateCanvas();
+        //linePoints.push( { x: mouseX, y: mouseY, drag: mouseDrag, width: toolSize, color: strokeStyle } );
+        context.fillStyle = strokeStyle;
+        console.log(mouseX);
+        context.fillRect(mouseX-(toolSize/2),mouseY - (toolSize/2),toolSize,toolSize);
+        
+        //updateCanvas();
     }
     else{
         if(e.type === 'touchstart'){
