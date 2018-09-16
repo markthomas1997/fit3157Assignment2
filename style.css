@@ -63,6 +63,17 @@ body {
     pointer-events: none;
 }
 
+.menu-open #colors img {
+    position: absolute;
+    bottom: 100px;
+    right: 100px;
+}
+
+.menu-open #colors img.active{
+    z-index: 2;
+    content:url(images2/palette.png);
+}
+
 #canvas {
     background-color: white;
     background-image: url(images/paper.jpg);

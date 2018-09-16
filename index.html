@@ -43,7 +43,32 @@
     </div>
   
   </div>
-  
+    
+  <!-- colour wheel -->
+  <script>
+    document.querySelector( '#colors' ).addEventListener( 'touchend', openMenu );
+    var colorsList = document.querySelectorAll( '#app #colors img' );
+    
+    function openMenu(e) {
+        if(e.target !== e.currentTarget){
+            document.querySelector( 'html' ).classList.toggle( 'menu-open' );
+            for ( var i=0; i<colorsList.length; i++ ) {
+                colorsList[i].classList.remove('active');
+            }
+            e.target.classList.add('active');
+            selectStroke(e);
+            for ( var i=0; i<colorsList.length; i++ ) {
+                //console.log(colorsList[i].classList.contains('active'));
+            }
+            if ( document.querySelector( 'html' ).classList.contains( 'menu-open' ) ) {
+                //console.log("colour wheel open");
+            } else {
+                //console.log("colour wheel closed");
+            }    
+        }  
+    }
+
+  </script>
   <script type="text/javascript" src="script.js"></script>
 </body>
 </html>

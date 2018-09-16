@@ -160,7 +160,7 @@ function selectTool(e){
 
 function selectStroke(e){
     if ( e.target === e.currentTarget ) return;
-    console.log(e);
+    e.target.style.backgroundColor = e.target.dataset.color; //gives colour button appropriate bg colour
 
     strokeStyle = e.target.dataset.color || strokeStyle;
     highlightButton( e.target );
