@@ -146,6 +146,7 @@ document.querySelector('#tools').addEventListener('click', selectTool);
 document.querySelector('#colors').addEventListener('click', selectStroke);
 
 function selectTool(e){
+    console.log("test");
     if ( e.target === e.currentTarget ) return;
     console.log(e);
     if ( !e.target.dataset.action ) {
@@ -166,7 +167,7 @@ function selectStroke(e){
 }
 
 function highlightButton( button ) {
-    var buttons = button.parentNode.querySelectorAll( 'img' );
+    var buttons = button.parentNode.parentNode.querySelectorAll( 'img' );
     buttons.forEach( function( element ){ element.classList.remove('active') } );
     button.classList.add( 'active' );
 }
