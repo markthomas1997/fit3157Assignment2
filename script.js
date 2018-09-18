@@ -25,6 +25,8 @@ window.addEventListener( 'touchend', stop );
 
 window.addEventListener( 'resize', resizeCanvas );
 
+var timer = window.setTimeout(clearCanvas, 5000);
+
 function resizeCanvas(){
     canvas.width = canvas.clientWidth;
     canvas.height = canvas.clientHeight;
@@ -35,6 +37,8 @@ function resizeCanvas(){
 resizeCanvas();
 
 function draw( e ) {
+    resetTimer(); //resets timer to clear canvas
+    
     var mouseX = e.pageX - canvas.offsetLeft;
     var mouseY = e.pageY - canvas.offsetTop;
   if ( e.which === 1 || e.type === 'touchstart' || e.type === 'touchmove') {
@@ -116,6 +120,7 @@ function stop( e ) {
 function updateCanvas() {
     context.clearRect( 0, 0, canvas.width, canvas.height );
     context.putImageData( canvasState[0], 0, 0 );
+    
     renderLine();
 }
 
@@ -155,7 +160,7 @@ function selectTool(e){
         highlightButton( e.target );
     }
     if ( e.target === undoButton ) undoState();
-    if ( e.target.dataset.action == "delete" ) clearCanvas();
+    if ( e.target.dataset.action == "delete" ) clearCanvas(); //prompts user to clear canvas
 }
 
 function selectStroke(e){
@@ -190,4 +195,16 @@ function clearCanvas(){
         canvasState = [];
         if ( !canvasState.length ) undoButton.classList.add( 'disabled' );        
     }
+}
+
+/**
+function resets the timer to clear window after 5 minutes of inactivity
+**/
+function resetTimer(){
+    clearTimeout(timer);
+    timer = window.setTimeout(function(){
+        context.clearRect( 0, 0, canvas.width, canvas.height );
+        canvasState = [];
+        if ( !canvasState.length ) undoButton.classList.add( 'disabled' ); 
+    }, 300000);
 }
