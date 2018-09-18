@@ -78,6 +78,7 @@ body {
     position: absolute;
     bottom: 15%;
     right: 28%;
+    transition: 0.25s;
 }
 
 
