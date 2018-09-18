@@ -55,6 +55,7 @@
     var colorsList = document.querySelectorAll( '#app #colors img' );
     
     function openMenu(e) {
+        e.preventDefault();
         if(e.target !== e.currentTarget){
             document.querySelector( 'html' ).classList.toggle( 'menu-open' );
             for ( var i=0; i<colorsList.length; i++ ) {
