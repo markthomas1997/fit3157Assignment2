@@ -35,6 +35,10 @@ body {
     align-items: center;
 }
 
+.toolbar#colors {
+    position: relative;
+}
+
 .toolbar img{
     width: 90px;
     height: 90px;
@@ -43,6 +47,13 @@ body {
     box-shadow:0 2px 6px rgba( 0,0,0,0.25 );
     background-color: white;
 }
+
+.toolbar#colors img {
+    border-radius: 50%;
+    width: 75px;
+    height: 75px;
+}
+
 
 .toolbar img.active {
     border-color: #00ccff;
@@ -63,16 +74,125 @@ body {
     pointer-events: none;
 }
 
-.menu-open #colors img {
+.menu-open #colors img, #colors img {
     position: absolute;
-    bottom: 100px;
-    right: 100px;
+    bottom: 15%;
+    right: 28%;
 }
 
-.menu-open #colors img.active{
+
+#colors img.active{
     z-index: 2;
     content:url(images2/palette.png);
 }
+.menu-open #colors img.active{
+    content: normal;
+}
+
+/*
+color logic
+*/
+#colors img#violetCol {
+    background-color: #46113f;
+}
+#colors img#violetblueCol {
+    background-color: #47395a;
+}
+#colors img#blueCol {
+    background-color: #3a3b71;
+}
+#colors img#lightblueCol {
+    background-color: #253b74;
+}
+#colors img#greenlightblueCol {
+    background-color: #225a75;
+}
+#colors img#greenCol {
+    background-color: #4b7e75;
+}
+#colors img#greenyellowCol {
+    background-color: #a7a471;
+}
+#colors img#yellowCol {
+    background-color: #b59349;
+}
+#colors img#yelloworangeCol {
+    background-color: #bf7341;
+}
+#colors img#orangeCol {
+    background-color: #ba4428;
+}
+#colors img#orangeredCol {
+    background-color: #ad3a35;
+}
+#colors img#redCol {
+    background-color: #962b3d;
+}
+/*
+menuopen color logic
+*/
+.menu-open #colors img#violetCol {
+    background-color: #46113f;
+    bottom:32%;
+    right:-25%;
+}
+.menu-open #colors img#violetblueCol {
+    background-color: #47395a;
+    bottom:21%;
+    right:-45%;
+}
+.menu-open #colors img#blueCol {
+    background-color: #3a3b71;
+    bottom: 8%;
+    right:-45%;
+}
+.menu-open #colors img#lightblueCol {
+    background-color: #253b74;
+    bottom: -3%;
+    right:-25%;
+}
+.menu-open #colors img#greenlightblueCol {
+    background-color: #225a75;
+    bottom: -11%;
+    right:5%;
+}
+.menu-open #colors img#greenCol {
+    background-color: #4b7e75;
+    bottom: -11%;
+    left:18%;
+}
+.menu-open #colors img#greenyellowCol {
+    background-color: #a7a471;
+    bottom: -3%;
+    left:-13%;
+}
+.menu-open #colors img#yellowCol {
+    background-color: #b59349;
+    bottom: 8%;
+    left:-35%;
+}
+.menu-open #colors img#yelloworangeCol {
+    background-color: #bf7341;
+    bottom:21%;
+    left:-35%;
+}
+.menu-open #colors img#orangeCol {
+    background-color: #ba4428;
+    bottom:32%;
+    left:-13%;
+}
+.menu-open #colors img#orangeredCol {
+    background-color: #ad3a35;
+    bottom:40%;
+    left:18%;
+}
+.menu-open #colors img#redCol {
+    background-color: #962b3d;
+    bottom: 40%;
+    right:5%;
+}
+
+
 
 #canvas {
     background-color: white;
