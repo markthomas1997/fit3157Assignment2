@@ -41,93 +41,124 @@ function draw( e ) {
     
     var mouseX = e.pageX - canvas.offsetLeft;
     var mouseY = e.pageY - canvas.offsetTop;
-  if ( e.which === 1 || e.type === 'touchstart' || e.type === 'touchmove') {
-    window.addEventListener( 'mousemove', draw );
-    window.addEventListener('touchmove', draw);
-    mouseX = e.pageX - canvas.offsetLeft;
-    mouseY = e.pageY - canvas.offsetTop;
-    var mouseDrag = e.type === 'mousemove';
-      
-    if(toolMode != 'drawRect' && toolMode !='drawSq' && toolMode != 'drawCir'){     // Two types, draw rectangle or sqaure.
-        if(e.type === 'touchstart' || e.type === 'touchmove'){
-        mouseX = e.touches[0].pageX - canvas.offsetLeft;
-        mouseY = e.touches[0].pageY - canvas.offsetTop;
-        mouseDrag = e.type === 'touchmove';
-        }
-        
-        if ( e.type === 'mousedown' || e.type === 'touchstart' ) saveState();
-        //linePoints.push( { x: mouseX, y: mouseY, drag: mouseDrag, width: toolSize, color: strokeStyle } );
-        context.fillStyle = strokeStyle;
-        console.log(mouseX);
-        context.fillRect(mouseX-(toolSize/2),mouseY - (toolSize/2),toolSize,toolSize);
-        
-        //updateCanvas();
-    }
-    else if (toolMode == 'drawRect'){           // This is for Drawing Rectangle
-        if(e.type === 'touchstart'){
-            saveState();
-            initMouseX = e.touches[0].pageX - canvas.offsetLeft;
-            initMouseY = e.touches[0].pageY - canvas.offsetTop;
-            
-        }
-        if(e.type === 'touchmove'){
-            //draw rectangle 
-            context.clearRect( 0, 0, canvas.width, canvas.height );
-            context.putImageData( canvasState[0], 0, 0 );
-            //renderLine();
-            
-            newMouseX = e.touches[0].pageX - canvas.offsetLeft;
-            newMouseY = e.touches[0].pageY - canvas.offsetTop;
-            
+    
+    
+    
+    
+    
+    if ( e.which === 1 || e.type === 'touchstart' || e.type === 'touchmove') {
+        window.addEventListener( 'mousemove', draw );
+        window.addEventListener('touchmove', draw);
+        mouseX = e.pageX - canvas.offsetLeft;
+        mouseY = e.pageY - canvas.offsetTop;
+        var mouseDrag = e.type === 'mousemove';
+
+        if(toolMode != 'drawRect' && toolMode !='drawSq' && toolMode != 'drawCir' && toolMode != 'eyeDrop'){     // Two types, draw rectangle or sqaure.
+            if(e.type === 'touchstart' || e.type === 'touchmove'){
+            mouseX = e.touches[0].pageX - canvas.offsetLeft;
+            mouseY = e.touches[0].pageY - canvas.offsetTop;
+            mouseDrag = e.type === 'touchmove';
+            }
+
+            if ( e.type === 'mousedown' || e.type === 'touchstart' ) saveState();
+            //linePoints.push( { x: mouseX, y: mouseY, drag: mouseDrag, width: toolSize, color: strokeStyle } );
             context.fillStyle = strokeStyle;
-            context.fillRect(initMouseX,initMouseY,newMouseX-initMouseX,newMouseY-initMouseY);
+            console.log(mouseX);
+            context.fillRect(mouseX-(toolSize/2),mouseY - (toolSize/2),toolSize,toolSize);
+
+            //updateCanvas();
         }
-    }
-    else if(toolMode == 'drawSq'){              // This is for Drawing Sqaure
-        if(e.type === 'touchstart'){
-            saveState();
-            initMouseX = e.touches[0].pageX - canvas.offsetLeft;
-            initMouseY = e.touches[0].pageY - canvas.offsetTop;
-            
+        else if (toolMode == 'drawRect'){           // This is for Drawing Rectangle
+            if(e.type === 'touchstart'){
+                saveState();
+                initMouseX = e.touches[0].pageX - canvas.offsetLeft;
+                initMouseY = e.touches[0].pageY - canvas.offsetTop;
+
+            }
+            if(e.type === 'touchmove'){
+                //draw rectangle 
+                context.clearRect( 0, 0, canvas.width, canvas.height );
+                context.putImageData( canvasState[0], 0, 0 );
+                //renderLine();
+
+                newMouseX = e.touches[0].pageX - canvas.offsetLeft;
+                newMouseY = e.touches[0].pageY - canvas.offsetTop;
+
+                context.fillStyle = strokeStyle;
+                context.fillRect(initMouseX,initMouseY,newMouseX-initMouseX,newMouseY-initMouseY);
+            }
         }
-        if(e.type === 'touchmove'){
-            //draw rectangle 
-            context.clearRect( 0, 0, canvas.width, canvas.height );
-            context.putImageData( canvasState[0], 0, 0 );
-            //renderLine();
-            
-            newMouseX = e.touches[0].pageX - canvas.offsetLeft;
-            newMouseY = e.touches[0].pageY - canvas.offsetTop;
-            
-            context.fillStyle = strokeStyle;
-            context.fillRect(initMouseX,initMouseY,newMouseX-initMouseX,newMouseX-initMouseX);      // Use the X-axis to deteremine square size.
-        }
-    } 
-    else if (toolMode == 'drawCir'){
-        console.log("CIRCLE FUNCTION WAS CALLED");
-        if(e.type === 'touchstart'){
-            saveState();
-            initMouseX = e.touches[0].pageX - canvas.offsetLeft;
-            initMouseY = e.touches[0].pageY - canvas.offsetTop;
-            
-        }
-        if(e.type === 'touchmove'){
-            //draw rectangle 
-            context.clearRect( 0, 0, canvas.width, canvas.height );
-            context.putImageData( canvasState[0], 0, 0 );
-            //renderLine();
-            
-            newMouseX = e.touches[0].pageX - canvas.offsetLeft;
-            newMouseY = e.touches[0].pageY - canvas.offsetTop;
-            context.beginPath();
-            context.arc(newMouseX,newMouseY,Math.abs((newMouseX - initMouseX)/2),0,2*Math.PI);
-            context.fillStyle = strokeStyle;
-            context.fill();
-           }
+        else if(toolMode == 'drawSq'){              // This is for Drawing Sqaure
+            if(e.type === 'touchstart'){
+                saveState();
+                initMouseX = e.touches[0].pageX - canvas.offsetLeft;
+                initMouseY = e.touches[0].pageY - canvas.offsetTop;
+
+            }
+            if(e.type === 'touchmove'){
+                //draw rectangle 
+                context.clearRect( 0, 0, canvas.width, canvas.height );
+                context.putImageData( canvasState[0], 0, 0 );
+                //renderLine();
+
+                newMouseX = e.touches[0].pageX - canvas.offsetLeft;
+                newMouseY = e.touches[0].pageY - canvas.offsetTop;
+
+                context.fillStyle = strokeStyle;
+                context.fillRect(initMouseX,initMouseY,newMouseX-initMouseX,newMouseX-initMouseX);      // Use the X-axis to deteremine square size.
+            }
+        } 
+        else if (toolMode == 'drawCir'){
+            //console.log("CIRCLE FUNCTION WAS CALLED");
+            if(e.type === 'touchstart'){
+                saveState();
+                initMouseX = e.touches[0].pageX - canvas.offsetLeft;
+                initMouseY = e.touches[0].pageY - canvas.offsetTop;
+
+            }
+            if(e.type === 'touchmove'){
+                //draw rectangle 
+                context.clearRect( 0, 0, canvas.width, canvas.height );
+                context.putImageData( canvasState[0], 0, 0 );
+                //renderLine();
+
+                newMouseX = e.touches[0].pageX - canvas.offsetLeft;
+                newMouseY = e.touches[0].pageY - canvas.offsetTop;
+                context.beginPath();
+                context.arc(newMouseX,newMouseY,Math.abs((newMouseX - initMouseX)/2),0,2*Math.PI);
+                context.fillStyle = strokeStyle;
+                context.fill();
+               }
+        }  
         
-        
-        
-    }  
+        else if(toolMode == "eyeDrop"){
+            
+            if(e.type === 'touchstart'){
+                initMouseX = e.touches[0].pageX - canvas.offsetLeft;
+                initMouseY = e.touches[0].pageY - canvas.offsetTop;
+                
+                
+                
+                
+                // Get Color At Location:
+                colorLayer = context.getImageData(initMouseX, initMouseY, 1, 1).data;
+                // Break it down
+                var r = colorLayer[0];	
+                var g = colorLayer[1];	
+                var b = colorLayer[2];
+                var a = colorLayer[3];
+                
+               
+                console.log("r: " + r + " g: " + g + " b: " + b + " a: " + a);
+                console.log(rgbToHex(r,g,b))
+                strokeStyle = rgbToHex(r,g,b);
+
+            }
+            if(e.type === 'touchmove'){
+                return;
+               }
+            
+        }
       
   }
 }
@@ -233,4 +264,12 @@ function resetTimer(){
         canvasState = [];
         if ( !canvasState.length ) undoButton.classList.add( 'disabled' ); 
     }, 300000);
+}
+function componentToHex(c) {
+    var hex = c.toString(16);
+    return hex.length == 1 ? "0" + hex : hex;
+}
+
+function rgbToHex(r, g, b) {
+    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
 }
