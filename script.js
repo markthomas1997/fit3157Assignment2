@@ -48,7 +48,7 @@ function draw( e ) {
     mouseY = e.pageY - canvas.offsetTop;
     var mouseDrag = e.type === 'mousemove';
       
-    if(toolMode != 'drawRect' && toolMode !='drawSq'){     // Two types, draw rectangle or sqaure.
+    if(toolMode != 'drawRect' && toolMode !='drawSq' && toolMode != 'drawCir'){     // Two types, draw rectangle or sqaure.
         if(e.type === 'touchstart' || e.type === 'touchmove'){
         mouseX = e.touches[0].pageX - canvas.offsetLeft;
         mouseY = e.touches[0].pageY - canvas.offsetTop;
@@ -102,7 +102,33 @@ function draw( e ) {
             context.fillStyle = strokeStyle;
             context.fillRect(initMouseX,initMouseY,newMouseX-initMouseX,newMouseX-initMouseX);      // Use the X-axis to deteremine square size.
         }
+    } 
+    else if (toolMode == 'drawCir'){
+        console.log("CIRCLE FUNCTION WAS CALLED");
+        if(e.type === 'touchstart'){
+            saveState();
+            initMouseX = e.touches[0].pageX - canvas.offsetLeft;
+            initMouseY = e.touches[0].pageY - canvas.offsetTop;
+            
+        }
+        if(e.type === 'touchmove'){
+            //draw rectangle 
+            context.clearRect( 0, 0, canvas.width, canvas.height );
+            context.putImageData( canvasState[0], 0, 0 );
+            //renderLine();
+            
+            newMouseX = e.touches[0].pageX - canvas.offsetLeft;
+            newMouseY = e.touches[0].pageY - canvas.offsetTop;
+            context.beginPath();
+            context.arc(newMouseX,newMouseY,Math.abs((newMouseX - initMouseX)/2),0,2*Math.PI);
+            context.fillStyle = strokeStyle;
+            context.fill();
+           }
+        
+        
+        
     }  
+      
   }
 }
 
