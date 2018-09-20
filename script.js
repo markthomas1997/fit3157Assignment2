@@ -101,7 +101,7 @@ function draw( e ) {
                 newMouseY = e.touches[0].pageY - canvas.offsetTop;
 
                 context.fillStyle = strokeStyle;
-                context.fillRect(initMouseX,initMouseY,newMouseX-initMouseX,newMouseX-initMouseX);      // Use the X-axis to deteremine square size.
+                context.fillRect(initMouseX,initMouseY,newMouseX-initMouseX,newMouseX-initMouseX);    // Use the X-axis to deteremine square size.
             }
         } 
         else if (toolMode == 'drawCir'){
@@ -121,7 +121,23 @@ function draw( e ) {
                 newMouseX = e.touches[0].pageX - canvas.offsetLeft;
                 newMouseY = e.touches[0].pageY - canvas.offsetTop;
                 context.beginPath();
-                context.arc(newMouseX,newMouseY,Math.abs((newMouseX - initMouseX)/2),0,2*Math.PI);
+                
+                
+                var nDeltaX = Math.abs(initMouseX - newMouseX);
+                var nDeltaY = Math.abs(initMouseY - newMouseY);
+                
+                console.log(nDeltaX + "   " + nDeltaY);
+                
+                radius = Math.sqrt(nDeltaX * nDeltaX + nDeltaY * nDeltaY);
+                
+                /*
+                context.clearRect(0, 0, canvas.width, canvas.height);
+                context.beginPath();
+                context.arc(nStartX, nStartY, radius, 0, Math.PI*2);
+                context.fill();
+                */
+                
+                context.arc(initMouseX, initMouseY, radius, 0, 2*Math.PI);
                 context.fillStyle = strokeStyle;
                 context.fill();
                }
@@ -134,10 +150,8 @@ function draw( e ) {
                 initMouseY = e.touches[0].pageY - canvas.offsetTop;
                 
                 
-                
-                
                 // Get Color At Location:
-                colorLayer = context.getImageData(initMouseX, initMouseY, 1, 1).data;
+                var colorLayer = context.getImageData(initMouseX, initMouseY, 1, 1).data;
                 // Break it down
                 var r = colorLayer[0];	
                 var g = colorLayer[1];	
