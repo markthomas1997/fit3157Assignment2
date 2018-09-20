@@ -61,6 +61,11 @@
     var buttons = document.querySelectorAll( '#app #colors img.colorImg' );
     buttons.forEach( function( element ){ element.classList.remove('active') } );
     document.getElementById("redCol").classList.add( 'active' );
+    //initialise template highlight
+    var buttons = document.querySelectorAll( '#app #colors img.template' );
+    buttons.forEach( function( element ){ element.classList.remove('active') } );
+    document.getElementById("template1").classList.add( 'active' );
+      
       
     document.querySelector( '#colors' ).addEventListener( 'touchend', openMenu );
     var colorsList = document.querySelectorAll( '#app #colors img.colorImg' );
@@ -84,6 +89,7 @@
                 templatesList[i].classList.remove('active');
             }
             e.target.classList.add('active');
+            saveState();
             switch(e.target.id){
                 case 'template1':context.clearRect(0,0,canvas.width,canvas.height);
                     break;
@@ -109,6 +115,54 @@
                     
                     context.fillStyle ='#44205d';
                     context.fillRect(canvas.width/3,canvas.height-canvas.height/4,canvas.width-canvas.width/1.5,canvas.height);
+                    
+                    break;
+                
+                case 'template4':context.fillStyle='#ffffff';
+                    context.fillRect(0,0,canvas.width,canvas.height);
+                    context.fillStyle ='#f9669a';
+                    context.fillRect(canvas.width/8,canvas.height/8,canvas.width*3/8,canvas.height*3/8);         
+                    
+                    context.fillStyle ='#db3b77';
+                    context.fillRect(canvas.width/2,canvas.height/8,canvas.width*3/8,canvas.height*3/8); 
+                    
+                    context.fillStyle ='#fe96ad';
+                    context.fillRect(canvas.width/8,canvas.height/2,canvas.width*3/8,canvas.height*3/8); 
+                    
+                    context.fillStyle ='#ffcbe7';
+                    context.fillRect(canvas.width/2,canvas.height/2,canvas.width*3/8,canvas.height*3/8); 
+                    
+                    context.fillStyle ='#46a8ff';
+                    context.fillRect(canvas.width/3,canvas.height/3,canvas.width-canvas.width/2-canvas.width/3,canvas.height-canvas.height/2-canvas.height/3);     
+                    
+                    context.fillStyle ='#0665e5';
+                    context.fillRect(canvas.width/2,canvas.height/3,canvas.width-canvas.width/2-canvas.width/3,canvas.height-canvas.height/2-canvas.height/3);     
+                    
+                    context.fillStyle ='#66c3ff';
+                    context.fillRect(canvas.width/3,canvas.height/2,canvas.width-canvas.width/2-canvas.width/3,canvas.height-canvas.height/2-canvas.height/3);   
+                    
+                    context.fillStyle ='#76eeff';
+                    context.fillRect(canvas.width/2,canvas.height/2,canvas.width-canvas.width/2-canvas.width/3,canvas.height-canvas.height/2-canvas.height/3);   
+                    
+                    break;
+                    
+                case 'template5':context.fillStyle='#e17d32';
+                    context.fillRect(0,0,canvas.width/4,canvas.height);
+                    
+                    context.fillStyle='#fcf454';
+                    context.fillRect(canvas.width/4,0,canvas.width/4,canvas.height);
+                    
+                    context.fillStyle='#011262';
+                    context.fillRect(canvas.width*2/4,0,canvas.width/4,canvas.height);
+                    
+                    context.fillStyle='#3876af';
+                    context.fillRect(canvas.width*3/4,0,canvas.width/4,canvas.height);
+                    
+                    context.fillStyle='#a16d34';
+                    context.fillRect(canvas.width/8,canvas.height/4,canvas.width/8,canvas.height/2);
+                    
+                    context.fillStyle='#a16d34';
+                    context.fillRect(canvas.width*3/4,canvas.height/4,canvas.width/8,canvas.height/2);
                     
                     break;
             }
