@@ -25,7 +25,7 @@ window.addEventListener( 'touchend', stop );
 
 window.addEventListener( 'resize', resizeCanvas );
 
-//var timer = window.setTimeout(clearCanvas, 5000);
+var timer = window.setTimeout(clearCanvas, 300000);
 
 function resizeCanvas(){
     canvas.width = canvas.clientWidth;
@@ -37,7 +37,7 @@ function resizeCanvas(){
 resizeCanvas();
 
 function draw( e ) {
-    //resetTimer(); //resets timer to clear canvas
+    resetTimer(); //resets timer to clear canvas
     
     var mouseX = e.pageX - canvas.offsetLeft;
     var mouseY = e.pageY - canvas.offsetTop;
