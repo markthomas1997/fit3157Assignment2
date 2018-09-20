@@ -49,7 +49,7 @@ function draw( e ) {
         mouseY = e.pageY - canvas.offsetTop;
         var mouseDrag = e.type === 'mousemove';
 
-        if(toolMode != 'drawRect' && toolMode !='drawSq' && toolMode != 'drawCir' && toolMode != 'eyeDrop'){     // Two types, draw rectangle or sqaure.
+        if(toolMode != 'drawRect' && toolMode !='drawSq' && toolMode != 'drawCir' && toolMode != 'eyeDrop' && toolMode != 'rubber'){     // Two types, draw rectangle or sqaure.
             if(e.type === 'touchstart' || e.type === 'touchmove'){
             mouseX = e.touches[0].pageX - canvas.offsetLeft;
             mouseY = e.touches[0].pageY - canvas.offsetTop;
@@ -75,7 +75,7 @@ function draw( e ) {
                 //draw rectangle 
                 context.clearRect( 0, 0, canvas.width, canvas.height );
                 context.putImageData( canvasState[0], 0, 0 );
-                //renderLine();
+                renderLine();
 
                 newMouseX = e.touches[0].pageX - canvas.offsetLeft;
                 newMouseY = e.touches[0].pageY - canvas.offsetTop;
@@ -95,7 +95,7 @@ function draw( e ) {
                 //draw rectangle 
                 context.clearRect( 0, 0, canvas.width, canvas.height );
                 context.putImageData( canvasState[0], 0, 0 );
-                //renderLine();
+                renderLine();
 
                 newMouseX = e.touches[0].pageX - canvas.offsetLeft;
                 newMouseY = e.touches[0].pageY - canvas.offsetTop;
@@ -113,10 +113,10 @@ function draw( e ) {
 
             }
             if(e.type === 'touchmove'){
-                //draw rectangle 
+                
                 context.clearRect( 0, 0, canvas.width, canvas.height );
                 context.putImageData( canvasState[0], 0, 0 );
-                //renderLine();
+                renderLine();
 
                 newMouseX = e.touches[0].pageX - canvas.offsetLeft;
                 newMouseY = e.touches[0].pageY - canvas.offsetTop;
@@ -167,6 +167,22 @@ function draw( e ) {
             if(e.type === 'touchmove'){
                 return;
                }
+        }
+        
+        
+        else if(toolMode == "rubber"){
+            
+            if(e.type === 'touchstart' || e.type === 'touchmove'){
+            mouseX = e.touches[0].pageX - canvas.offsetLeft;
+            mouseY = e.touches[0].pageY - canvas.offsetTop;
+            mouseDrag = e.type === 'touchmove';
+            }
+
+            if ( e.type === 'mousedown' || e.type === 'touchstart' ) saveState();
+            //linePoints.push( { x: mouseX, y: mouseY, drag: mouseDrag, width: toolSize, color: strokeStyle } );
+            //context.fillStyle = '#ffffff';
+            console.log(mouseX);
+            context.clearRect(mouseX-(toolSize/2),mouseY - (toolSize/2),toolSize,toolSize);
             
         }
       
