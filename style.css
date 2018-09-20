@@ -37,6 +37,8 @@ body {
 
 .toolbar#colors {
     position: relative;
+    display: grid;
+    grid-template-rows: 50px 50%;
 }
 
 .toolbar img{
@@ -53,7 +55,6 @@ body {
     width: 75px;
     height: 75px;
 }
-
 
 .toolbar img.active {
     border-color: #00ccff;
@@ -82,12 +83,51 @@ body {
 }
 
 
-#colors img.active{
+#colors img.colorImg.active{
     z-index: 2;
     content:url(images2/palette.png);
 }
 .menu-open #colors img.active{
     content: normal;
+}
+
+.toolbar#colors {
+    position: relative;
+    display: grid;
+    grid-template-rows: 50px 50%;
+}
+
+/*templates*/
+#colors img.template{
+    width:80px;
+    height:80px;
+    border-radius: 0;
+}
+#colors img.template#template1{
+    left: 0;
+    top:0;
+    margin: 5px;
+    background-color: white;
+}
+#colors img.template#template2{
+    right: 0;
+    top:0;
+    margin: 5px;
+}
+#colors img.template#template3{
+    left: 0;
+    top:85px;
+    margin: 5px;
+}
+#colors img.template#template4{
+    right: 0;
+    top:85px;
+    margin: 5px;
+}
+#colors img.template#template5{
+    left: 0;
+    top:170px;
+    margin: 5px;
 }
 
 /*
@@ -192,7 +232,6 @@ menuopen color logic
     bottom: 40%;
     right:5%;
 }
-
 
 
 #canvas {

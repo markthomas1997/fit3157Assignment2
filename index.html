@@ -19,7 +19,7 @@
         <img src="images2/delete.png" data-action="delete"/>
     </div>
     <div id="tools2" class="toolbar">
-        <img src="images2/paintBucket.png" data-mode="eyeDrop"/>
+        <img src="images2/eyedropper.png" data-mode="eyeDrop"/>
         <img src="images2/square.png" data-mode="drawSq" data-size="20"/>
         <img src="images2/eraser.png" data-mode="erase" data-size="20"/>
         <img src="images2/small.png" data-mode="draw" data-size="10" class="active"/>
@@ -33,45 +33,86 @@
     <canvas id="canvas" width="700" height="500"></canvas>
     
     <div id="colors" class="toolbar">
-        <img id="violetCol"data-color="#46113f" class="active"/>
-        <img id="violetblueCol"data-color="#47395a"/>
-        <img id="blueCol"data-color="#3a3b71"/>
-        <img id="lightblueCol"data-color="#253b74"/>
-        <img id="greenlightblueCol"data-color="#225a75"/>
-        <img id="greenCol"data-color="#4b7e75"/>
-        <img id="greenyellowCol" data-color="#a7a471" class="active" />
-        <img id="yellowCol"data-color="#b59349"/>
-        <img id="yelloworangeCol"data-color="#bf7341"/>
-        <img id="orangeCol"data-color="#ba4428"/>
-        <img id="orangeredCol"data-color="#ad3a35"/>
-        <img id="redCol" data-color="#962b3d" />
+        <img class='template' id='template1' class="active"/>
+        <img class='template' id='template2' src="images2/template2.jpg"/>
+        <img class='template' id='template3' src="images2/template3.jpg"/>
+        <img class='template' id='template4' src="images2/template4.jpg"/>
+        <img class='template' id='template5' src="images2/template5.jpg"/>
+        
+        <img class="colorImg" id="violetCol"data-color="#46113f"/>
+        <img class="colorImg" id="violetblueCol"data-color="#47395a"/>
+        <img class="colorImg" id="blueCol"data-color="#3a3b71"/>
+        <img class="colorImg" id="lightblueCol"data-color="#253b74"/>
+        <img class="colorImg" id="greenlightblueCol"data-color="#225a75"/>
+        <img class="colorImg" id="greenCol"data-color="#4b7e75"/>
+        <img class="colorImg" id="greenyellowCol" data-color="#a7a471" />
+        <img class="colorImg" id="yellowCol"data-color="#b59349"/>
+        <img class="colorImg" id="yelloworangeCol"data-color="#bf7341"/>
+        <img class="colorImg" id="orangeCol"data-color="#ba4428"/>
+        <img class="colorImg" id="orangeredCol"data-color="#ad3a35"/>
+        <img class="colorImg" id="redCol" data-color="#962b3d" class="active"/>
     </div>
   
   </div>
     
   <!-- colour wheel -->
   <script>
+    //initialise color highlight
+    var buttons = document.querySelectorAll( '#app #colors img.colorImg' );
+    buttons.forEach( function( element ){ element.classList.remove('active') } );
+    document.getElementById("redCol").classList.add( 'active' );
+      
     document.querySelector( '#colors' ).addEventListener( 'touchend', openMenu );
-    var colorsList = document.querySelectorAll( '#app #colors img' );
+    var colorsList = document.querySelectorAll( '#app #colors img.colorImg' );
+    var templatesList = document.querySelectorAll( '#app #colors img.template' );
+      
+    var background;
     
     function openMenu(e) {
         e.preventDefault();
-        if(e.target !== e.currentTarget){
+        if(e.target !== e.currentTarget && !e.target.classList.contains("template")){
             document.querySelector( 'html' ).classList.toggle( 'menu-open' );
             for ( var i=0; i<colorsList.length; i++ ) {
                 colorsList[i].classList.remove('active');
             }
             e.target.classList.add('active');
             selectStroke(e);
-            for ( var i=0; i<colorsList.length; i++ ) {
-                //console.log(colorsList[i].classList.contains('active'));
+
+        }
+        else if(e.target !== e.currentTarget && !e.target.classList.contains("colorImg")){
+            for ( var i=0; i<templatesList.length; i++ ) {
+                templatesList[i].classList.remove('active');
             }
-            if ( document.querySelector( 'html' ).classList.contains( 'menu-open' ) ) {
-                //console.log("colour wheel open");
-            } else {
-                //console.log("colour wheel closed");
-            }    
-        }  
+            e.target.classList.add('active');
+            switch(e.target.id){
+                case 'template1':context.clearRect(0,0,canvas.width,canvas.height);
+                    break;
+                case 'template2':context.fillStyle='#f4a30c';
+                    context.fillRect(0,0,canvas.width,canvas.height);
+                    context.fillStyle ='#c65302';
+                    context.fillRect(canvas.width/8,canvas.height/8,canvas.width-canvas.width/4,canvas.height-canvas.height/4);
+                    context.fillStyle ='#bb490b';
+                    context.fillRect(canvas.width/4,canvas.height/4,canvas.width-canvas.width/2,canvas.height-canvas.height/2);
+                    context.fillStyle ='#b41e10';
+                    context.fillRect(canvas.width/3,canvas.height/3,canvas.width-canvas.width/1.5,canvas.height-canvas.height/1.5);
+                    break;
+                case 'template3':context.fillStyle='#57112b';
+                    context.fillRect(0,0,canvas.width,canvas.height);
+                    context.fillStyle ='#44205d';
+                    context.fillRect(0,canvas.height*1/8,canvas.width,canvas.height/8);         
+
+                    context.fillStyle ='#bd541b';
+                    context.fillRect(canvas.width/4,canvas.height/4,canvas.width-canvas.width/2,canvas.height-canvas.height/2);
+                    
+                    context.fillStyle ='#bb5338';
+                    context.fillRect(canvas.width/3,canvas.height/2,canvas.width-canvas.width/1.5,canvas.height);
+                    
+                    context.fillStyle ='#44205d';
+                    context.fillRect(canvas.width/3,canvas.height-canvas.height/4,canvas.width-canvas.width/1.5,canvas.height);
+                    
+                    break;
+            }
+        }
     }
 
   </script>

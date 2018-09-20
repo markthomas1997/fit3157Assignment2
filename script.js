@@ -4,7 +4,7 @@ var linePoints = [];
 
 var toolMode = 'draw'
 var toolSize = 5;
-var strokeStyle = "#000000";
+var strokeStyle = "#962b3d";
 
 var initMouseX = 0;
 var initMouseY = 0;
@@ -15,7 +15,7 @@ var undoButton = document.querySelector( '[data-action=undo]' );
 
 var canvasState = [];
 
-context.strokeStyle = "#000000";
+context.strokeStyle = "#962b3d";
 context.lineWidth = 5;
 
 canvas.addEventListener( 'mousedown', draw );
@@ -25,7 +25,7 @@ window.addEventListener( 'touchend', stop );
 
 window.addEventListener( 'resize', resizeCanvas );
 
-var timer = window.setTimeout(clearCanvas, 5000);
+//var timer = window.setTimeout(clearCanvas, 5000);
 
 function resizeCanvas(){
     canvas.width = canvas.clientWidth;
@@ -37,14 +37,10 @@ function resizeCanvas(){
 resizeCanvas();
 
 function draw( e ) {
-    resetTimer(); //resets timer to clear canvas
+    //resetTimer(); //resets timer to clear canvas
     
     var mouseX = e.pageX - canvas.offsetLeft;
     var mouseY = e.pageY - canvas.offsetTop;
-    
-    
-    
-    
     
     if ( e.which === 1 || e.type === 'touchstart' || e.type === 'touchmove') {
         window.addEventListener( 'mousemove', draw );
