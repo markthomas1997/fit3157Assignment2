@@ -49,7 +49,7 @@ function draw( e ) {
         mouseY = e.pageY - canvas.offsetTop;
         var mouseDrag = e.type === 'mousemove';
 
-        if(toolMode != 'drawRect' && toolMode !='drawSq' && toolMode != 'drawCir' && toolMode != 'eyeDrop' && toolMode != 'rubber'){     // Two types, draw rectangle or sqaure.
+        if(toolMode != 'drawRect' && toolMode !='drawSq' && toolMode != 'drawCir' && toolMode != 'eyeDrop' && toolMode != 'rubber'){     // This if for only Drawing Lines.
             if(e.type === 'touchstart' || e.type === 'touchmove'){
             mouseX = e.touches[0].pageX - canvas.offsetLeft;
             mouseY = e.touches[0].pageY - canvas.offsetTop;
@@ -64,7 +64,7 @@ function draw( e ) {
 
             //updateCanvas();
         }
-        else if (toolMode == 'drawRect'){           // This is for Drawing Rectangle
+        else if (toolMode == 'drawRect'){   // This is for Drawing Rectangle
             if(e.type === 'touchstart'){
                 saveState();
                 initMouseX = e.touches[0].pageX - canvas.offsetLeft;
@@ -75,16 +75,17 @@ function draw( e ) {
                 //draw rectangle 
                 context.clearRect( 0, 0, canvas.width, canvas.height );
                 context.putImageData( canvasState[0], 0, 0 );
-                renderLine();
+                //renderLine();
 
                 newMouseX = e.touches[0].pageX - canvas.offsetLeft;
                 newMouseY = e.touches[0].pageY - canvas.offsetTop;
-
-                context.fillStyle = strokeStyle;
+                
+                // Create Rectangle, and add the color.
+                context.fillStyle = strokeStyle;    
                 context.fillRect(initMouseX,initMouseY,newMouseX-initMouseX,newMouseY-initMouseY);
             }
         }
-        else if(toolMode == 'drawSq'){              // This is for Drawing Sqaure
+        else if(toolMode == 'drawSq'){              // This is for Drawing Perfect Sqaure
             if(e.type === 'touchstart'){
                 saveState();
                 initMouseX = e.touches[0].pageX - canvas.offsetLeft;
@@ -99,13 +100,14 @@ function draw( e ) {
 
                 newMouseX = e.touches[0].pageX - canvas.offsetLeft;
                 newMouseY = e.touches[0].pageY - canvas.offsetTop;
-
+                
+                // Similar to Rectangle, however the sides are the same length.
                 context.fillStyle = strokeStyle;
                 context.fillRect(initMouseX,initMouseY,newMouseX-initMouseX,newMouseX-initMouseX);    // Use the X-axis to deteremine square size.
             }
         } 
         else if (toolMode == 'drawCir'){
-            //console.log("CIRCLE FUNCTION WAS CALLED");
+            
             if(e.type === 'touchstart'){
                 saveState();
                 initMouseX = e.touches[0].pageX - canvas.offsetLeft;
@@ -123,23 +125,16 @@ function draw( e ) {
                 context.beginPath();
                 
                 
-                var nDeltaX = Math.abs(initMouseX - newMouseX);
-                var nDeltaY = Math.abs(initMouseY - newMouseY);
+                var nDeltaX = Math.abs(initMouseX - newMouseX); // Get the Change in X
+                var nDeltaY = Math.abs(initMouseY - newMouseY); // Get the Change in Y
                 
-                console.log(nDeltaX + "   " + nDeltaY);
                 
-                radius = Math.sqrt(nDeltaX * nDeltaX + nDeltaY * nDeltaY);
                 
-                /*
-                context.clearRect(0, 0, canvas.width, canvas.height);
-                context.beginPath();
-                context.arc(nStartX, nStartY, radius, 0, Math.PI*2);
-                context.fill();
-                */
-                
-                context.arc(initMouseX, initMouseY, radius, 0, 2*Math.PI);
-                context.fillStyle = strokeStyle;
-                context.fill();
+                radius = Math.sqrt(nDeltaX * nDeltaX + nDeltaY * nDeltaY);  // Calculate Radius Using Formular r = sqrt( x^2 + y^2)
+                  
+                context.arc(initMouseX, initMouseY, radius, 0, 2*Math.PI);  // Create the Circle
+                context.fillStyle = strokeStyle;                            // Fill in the color.
+                context.fill();     
                }
         }  
         
@@ -150,8 +145,8 @@ function draw( e ) {
                 initMouseY = e.touches[0].pageY - canvas.offsetTop;
                 
                 
-                // Get Color At Location:
-                var colorLayer = context.getImageData(initMouseX, initMouseY, 1, 1).data;
+                // Get the image data from the canvas, at the specific mouse location.
+                var colorLayer = context.getImageData(initMouseX, initMouseY, 1, 1).data;       
                 // Break it down
                 var r = colorLayer[0];	
                 var g = colorLayer[1];	
@@ -159,9 +154,8 @@ function draw( e ) {
                 var a = colorLayer[3];
                 
                
-                console.log("r: " + r + " g: " + g + " b: " + b + " a: " + a);
-                console.log(rgbToHex(r,g,b))
-                strokeStyle = rgbToHex(r,g,b);
+                
+                strokeStyle = rgbToHex(r,g,b); // Use the rgb to then convert it into hex, so that it can be used.
 
             }
             if(e.type === 'touchmove'){
@@ -170,7 +164,7 @@ function draw( e ) {
         }
         
         
-        else if(toolMode == "rubber"){
+        else if(toolMode == "rubber"){          // Eraser
             
             if(e.type === 'touchstart' || e.type === 'touchmove'){
             mouseX = e.touches[0].pageX - canvas.offsetLeft;
@@ -179,10 +173,8 @@ function draw( e ) {
             }
 
             if ( e.type === 'mousedown' || e.type === 'touchstart' ) saveState();
-            //linePoints.push( { x: mouseX, y: mouseY, drag: mouseDrag, width: toolSize, color: strokeStyle } );
-            //context.fillStyle = '#ffffff';
-            console.log(mouseX);
-            context.clearRect(mouseX-(toolSize/2),mouseY - (toolSize/2),toolSize,toolSize);
+            
+            context.clearRect(mouseX-(toolSize/2),mouseY - (toolSize/2),toolSize,toolSize);     // Everytime you erase, it clears a rectangle.
             
         }
       
@@ -292,10 +284,12 @@ function resetTimer(){
     }, 300000);
 }
 function componentToHex(c) {
+    // Used to convert into Hex
     var hex = c.toString(16);
     return hex.length == 1 ? "0" + hex : hex;
 }
 
 function rgbToHex(r, g, b) {
+    // Converts r g b into hex.
     return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
 }
