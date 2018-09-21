@@ -1,32 +1,34 @@
-var canvas = document.querySelector( '#canvas' );
-var context = canvas.getContext( '2d' );
+var canvas = document.querySelector('#canvas');
+var context = canvas.getContext('2d');
 var linePoints = [];
 
 var toolMode = 'draw'
 var toolSize = 5;
 var strokeStyle = "#962b3d";
 
+//global variables for use with drawing shapes
 var initMouseX = 0;
 var initMouseY = 0;
 var newMouseX = 0;
 var newMouseY = 0;
 
-var undoButton = document.querySelector( '[data-action=undo]' );
+var undoButton = document.querySelector('[data-action=undo]');
 
 var canvasState = [];
 
 context.strokeStyle = "#962b3d";
 context.lineWidth = 5;
 
-canvas.addEventListener( 'mousedown', draw );
-canvas.addEventListener( 'touchstart', draw );
-window.addEventListener( 'mouseup', stop );
-window.addEventListener( 'touchend', stop );
+canvas.addEventListener('mousedown', draw);
+canvas.addEventListener('touchstart', draw);
+window.addEventListener('mouseup', stop);
+window.addEventListener('touchend', stop);
 
-window.addEventListener( 'resize', resizeCanvas );
+window.addEventListener('resize', resizeCanvas);
 
-var timer = window.setTimeout(clearCanvas, 300000);
+var timer = window.setTimeout(clearCanvas, 300000); //initial timer set to clear canvas after 5 minutes reset upon draw
 
+/*function resizes canvas on page load*/
 function resizeCanvas(){
     canvas.width = canvas.clientWidth;
     canvas.height = canvas.clientHeight;
@@ -36,13 +38,17 @@ function resizeCanvas(){
 //resize canvas on load
 resizeCanvas();
 
-function draw( e ) {
+/*
+Function heavily modified and adapted from tutorial work
+Main function sets and responds to touch events appropriately
+*/
+function draw(e) {
     resetTimer(); //resets timer to clear canvas
     
     var mouseX = e.pageX - canvas.offsetLeft;
     var mouseY = e.pageY - canvas.offsetTop;
     
-    if ( e.which === 1 || e.type === 'touchstart' || e.type === 'touchmove') {
+    if (e.which === 1 || e.type === 'touchstart' || e.type === 'touchmove') {
         window.addEventListener( 'mousemove', draw );
         window.addEventListener('touchmove', draw);
         mouseX = e.pageX - canvas.offsetLeft;
@@ -56,7 +62,7 @@ function draw( e ) {
             mouseDrag = e.type === 'touchmove';
             }
 
-            if ( e.type === 'mousedown' || e.type === 'touchstart' ) saveState();
+            if (e.type === 'mousedown' || e.type === 'touchstart') saveState();
             //linePoints.push( { x: mouseX, y: mouseY, drag: mouseDrag, width: toolSize, color: strokeStyle } );
             context.fillStyle = strokeStyle;
             console.log(mouseX);
@@ -144,7 +150,6 @@ function draw( e ) {
                 initMouseX = e.touches[0].pageX - canvas.offsetLeft;
                 initMouseY = e.touches[0].pageY - canvas.offsetTop;
                 
-                
                 // Get the image data from the canvas, at the specific mouse location.
                 var colorLayer = context.getImageData(initMouseX, initMouseY, 1, 1).data;       
                 // Break it down
@@ -152,8 +157,6 @@ function draw( e ) {
                 var g = colorLayer[1];	
                 var b = colorLayer[2];
                 var a = colorLayer[3];
-                
-               
                 
                 strokeStyle = rgbToHex(r,g,b); // Use the rgb to then convert it into hex, so that it can be used.
 
@@ -163,8 +166,7 @@ function draw( e ) {
                }
         }
         
-        
-        else if(toolMode == "rubber"){          // Eraser
+        else if(toolMode == "rubber"){ // Erase coloured pixels using clearRect
             
             if(e.type === 'touchstart' || e.type === 'touchmove'){
             mouseX = e.touches[0].pageX - canvas.offsetLeft;
@@ -181,10 +183,9 @@ function draw( e ) {
   }
 }
 
-function drawSquare(initX, initY){
-    canvas.addEventListener('touchmove')
-}
-
+/*
+function removes event listeners for drawing on touch end
+*/
 function stop( e ) {
   if ( e.which === 1 || e.type === 'touchend') {
     window.removeEventListener('mousemove', draw);
@@ -192,29 +193,35 @@ function stop( e ) {
   }
 }
 
+/*
+function updates the canvas when lines are drawn
+*/
 function updateCanvas() {
-    context.clearRect( 0, 0, canvas.width, canvas.height );
-    context.putImageData( canvasState[0], 0, 0 );
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    context.putImageData(canvasState[0], 0, 0);
     
     renderLine();
 }
 
+/*
+Function is retained from basic tutorial work
+*/
 function renderLine() {
   context.lineJoin = "round";
   context.lineCap = "round";
-  for ( var i = 0, length = linePoints.length; i < length; i++ ) {
-    if ( !linePoints[i].drag ) {
+  for (var i = 0, length = linePoints.length; i < length; i++) {
+    if (!linePoints[i].drag) {
         //context.stroke();
         context.beginPath();
         context.lineWidth = linePoints[i].width;
         context.strokeStyle = linePoints[i].color;
-        context.moveTo( linePoints[i].x, linePoints[i].y );
-        context.lineTo( linePoints[i].x + 0.5, linePoints[i].y + 0.5 );
+        context.moveTo(linePoints[i].x, linePoints[i].y );
+        context.lineTo(linePoints[i].x + 0.5, linePoints[i].y + 0.5);
     } else {
-        context.lineTo( linePoints[i].x, linePoints[i].y );
+        context.lineTo(linePoints[i].x, linePoints[i].y);
     }
   }
-    if ( toolMode === 'erase' ) {
+    if (toolMode === 'erase') {
         context.globalCompositeOperation = 'destination-out';
     } else {
         context.globalCompositeOperation = 'source-over';
@@ -225,6 +232,10 @@ function renderLine() {
 document.querySelector('#tools').addEventListener('click', selectTool);
 document.querySelector('#colors').addEventListener('click', selectStroke);
 
+/*
+modified function from tutorial work
+selects chosen tool, highlights button pressed and makes call to clear canvas if appropriate
+*/
 function selectTool(e){
     console.log("test");
     if ( e.target === e.currentTarget ) return;
@@ -238,6 +249,10 @@ function selectTool(e){
     if ( e.target.dataset.action == "delete" ) clearCanvas(); //prompts user to clear canvas
 }
 
+/*
+modified function from tutorial work
+selects chosen stroke style, highlights button pressed and alters colour button background
+*/
 function selectStroke(e){
     if ( e.target === e.currentTarget ) return;
     e.target.style.backgroundColor = e.target.dataset.color; //gives colour button appropriate bg colour
@@ -245,30 +260,43 @@ function selectStroke(e){
     highlightButton( e.target );
 }
 
+/*
+function from tutorial work
+*/
 function highlightButton( button ) {
     var buttons = button.parentNode.parentNode.querySelectorAll( 'img' );
     buttons.forEach( function( element ){ element.classList.remove('active') } );
     button.classList.add( 'active' );
 }
 
+/*
+function from tutorial work
+*/
 function saveState() {
-    undoButton.classList.remove( 'disabled' );
-    canvasState.unshift( context.getImageData( 0, 0, canvas.width, canvas.height ) );
-    if ( canvasState.length > 25 ) canvasState.length = 25;
+    undoButton.classList.remove("disabled");
+    canvasState.unshift(context.getImageData(0, 0, canvas.width, canvas.height));
+    if (canvasState.length > 25) canvasState.length = 25;
     
     linePoints = [];
 }
 
+/*
+function from tutorial work
+*/
 function undoState() {
-    context.putImageData( canvasState.shift(), 0, 0 );
-    if ( !canvasState.length ) undoButton.classList.add( 'disabled' );
+    context.putImageData(canvasState.shift(), 0, 0);
+    if (!canvasState.length) {
+        undoButton.classList.add("disabled");
+    }
 }
 
 function clearCanvas(){
-    if(window.confirm("Are you sure you want to delete the drawing?")){
-        context.clearRect( 0, 0, canvas.width, canvas.height );
+    if(window.confirm("Are you sure you want to delete this work of art?")){
+        context.clearRect(0, 0, canvas.width, canvas.height);
         canvasState = [];
-        if ( !canvasState.length ) undoButton.classList.add( 'disabled' );        
+        if (!canvasState.length) {
+            undoButton.classList.add( 'disabled' );   
+        }
     }
 }
 
@@ -278,17 +306,20 @@ function resets the timer to clear window after 5 minutes of inactivity
 function resetTimer(){
     clearTimeout(timer);
     timer = window.setTimeout(function(){
-        context.clearRect( 0, 0, canvas.width, canvas.height );
+        context.clearRect(0, 0, canvas.width, canvas.height);
         canvasState = [];
-        if ( !canvasState.length ) undoButton.classList.add( 'disabled' ); 
+        if (!canvasState.length) undoButton.classList.add("disabled"); 
     }, 300000);
 }
+
+//code based on code from: https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
 function componentToHex(c) {
     // Used to convert into Hex
     var hex = c.toString(16);
     return hex.length == 1 ? "0" + hex : hex;
 }
 
+//code based on code from: https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
 function rgbToHex(r, g, b) {
     // Converts r g b into hex.
     return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);

@@ -22,9 +22,9 @@
         <img src="images2/eyedropper.png" data-mode="eyeDrop"/>
         <img src="images2/square.png" data-mode="drawSq" data-size="20"/>
         <img src="images2/eraser.png" data-mode="rubber" data-size="20"/>
-        <img src="images2/small.png" data-mode="draw" data-size="10" class="active"/>
-        <img src="images2/medium.png" data-mode="draw" data-size="20" class="active"/>
-        <img src="images2/large.png" data-mode="draw" data-size="50" class="active" />
+        <img src="images2/small.png" data-mode="draw" data-size="10"/>
+        <img src="images2/medium.png" data-mode="draw" data-size="20"/>
+        <img src="images2/large.png" data-mode="draw" data-size="50"/>
     </div>
       </div>
       <div>
@@ -73,6 +73,9 @@
       
     var background;
     
+    /*
+    function which programmatically sets the active tools for colour and templates
+    */
     function openMenu(e) {
         e.preventDefault();
         if(e.target !== e.currentTarget && !e.target.classList.contains("template")){
@@ -90,6 +93,9 @@
             }
             e.target.classList.add('active');
             saveState();
+            
+            //draw templates using fillRects due to tainted canvas error
+            
             switch(e.target.id){
                 case 'template1':context.clearRect(0,0,canvas.width,canvas.height);
                     break;
