@@ -75,7 +75,7 @@ function draw( e ) {
                 //draw rectangle 
                 context.clearRect( 0, 0, canvas.width, canvas.height );
                 context.putImageData( canvasState[0], 0, 0 );
-                //renderLine();
+                renderLine();
 
                 newMouseX = e.touches[0].pageX - canvas.offsetLeft;
                 newMouseY = e.touches[0].pageY - canvas.offsetTop;
